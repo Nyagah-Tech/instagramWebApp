@@ -1,0 +1,1 @@
+Hello {{name}}.We are glad to inform that the registration to our application was succesful.Enjoy Our application by login in with the credentials you registered with.

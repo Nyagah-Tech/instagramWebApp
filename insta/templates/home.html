@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    {{current_user}}
+    <h1>login successful</h1>
+    <a href="{%url 'logout' %}" class="btn btn-primary">Logout</a><br>
+    <a href="/new/post/" class="btn btn-primary">new post</a><br>
+    <a href="{%url 'profile'%}">profile</a>
+    <ul>
+        {% for image in images %}
+            <li>
+                <img src="{{image.image.url}}" alt="" class="img-responsive">
+                {{image.name}}
+                {{image.posted_by}}
+                <form action="{%url 'like'%}" method="POST">
+                    {%csrf_token%}
+                    <button type="submit" name="image.id" value="{{image.id}}" class="btn btn-primary">like</button>
+                </form>
+                <p>likes  {{image.liked.count}}</p>
+                
+            </li>
+        {% endfor %}
+        <br><br><br><br>
+        {% for user in users %}
+            <li>{{user.username}}
+                
+            </li>
+        {% endfor %}
+
+        <h1>{{dans.count}}</h1>
+
+    </ul>
+    
+</body>
+</html>

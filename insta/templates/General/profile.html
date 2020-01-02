@@ -1,0 +1,28 @@
+{% extends 'General/base.html'%}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block content%}
+    <div class="container">
+        <div class="profile">
+            <a href="{%url 'edit-profile' %}">edit profile</a><br>
+            <a href="{%url 'update-profile' %}">update profile</a>
+            {% for prof in profile %}
+                <p>{{prof.name}}</p>
+                <p>{{prof.bio}}</p>
+                <p>{{prof.profile_pic}}</p>
+            {% endfor %}
+        </div>
+        <div class="mypic" style="margin-top: 3px">
+            <h1>images</h1>
+            {% for image in images %}
+                <p>{{image.name}}</p>
+                <img src="{{image.image.url}}" alt="">
+            {% empty %}
+            <h1>ypou have no images</h1>
+            {% endfor %}
+            {{images}}
+            
+        </div>
+       
+    </div>
+{% endblock %}
