@@ -2,13 +2,16 @@
 {% load staticfiles %}
 {% load bootstrap4 %}
 {% block content %}
-    <div class="container">
-        <div class="image">
-        <form action="{%url 'new-image'%}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% bootstrap_form form%}
-            <input type="submit" class="btn btn-primary btn-lg" value="Post">
-        </form>
+    <body style="margin-top: 150px;">
+        <div class="container">
+            <div class="image">
+            <form action="{%url 'new-image'%}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form%}
+                <input type="submit" class="btn btn-primary btn-lg" value="Post">
+            </form>
+            </div>
         </div>
-    </div>
+    </body>
+    
 {% endblock%}

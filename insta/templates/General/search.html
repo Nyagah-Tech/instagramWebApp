@@ -1,0 +1,43 @@
+{% extends 'General/base.html' %}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{%static 'css/profile.css'%}">
+</head>
+<div class="container" id='prof'>
+    <h2 class="text-center" style="margin-bottom: 10px;">{{search}} profile</h2>
+    <div class="card" style="background-color:white">
+        <div class="row">
+            {% for prof in profile %}
+            <div class="col-md-10" style="margin-left: 20px;margin-top:30px">
+                <img src="{{prof.profile_pic.url}}" alt="profile" style="width: 350px; height: 350px; border-radius: 50%">
+                <p><b>Name: </b><i>{{name}}</i></p>
+                <p><b>Bio: </b><i class="text-center">{{prof.bio}}</i></p>
+                <p><b>Followers: </b> {{prof.followers.count}}</p>
+                <p><b>Following: </b>{{prof.following.count}}</p>
+                <p><b>Lastly updated on </b><i>{{prof.updated_on}}</i></p>
+            </div>
+            <div class="col-md-2"></div>
+               
+                
+            
+            {% endfor%}
+            
+           
+        </div>
+       
+    </div>
+    <div class="mypic" style="margin-top: 3px">
+        <h1>images</h1>
+        {% for image in images %}
+        <p>{{image.name}}</p>
+        <img src="{{image.image.url}}" alt="">
+        {% empty %}
+        <h1>{{search}} has not posted any image</h1>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endblock %}

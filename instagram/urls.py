@@ -16,15 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.contrib.auth import views
-from insta.views import login_view,home,register_view,logout_view
+from insta.views import home,register,logout_view
 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('insta.urls')),
-    path('accounts/login/',login_view),
-    path('accounts/register/',register_view),
+    path('accounts/',include('registration.backends.simple.urls')),
+    path('accounts/login/account/register/',register,name = 'register'),
+    path('accounts/login/account/register/register/',register,name = 'register'),
     path('tinymce/', include('tinymce.urls')),
     
     

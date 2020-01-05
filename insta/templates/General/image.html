@@ -1,0 +1,39 @@
+{% extends 'General/base.html' %}
+{% load staticfiles %}
+{% load bootstrap4 %}
+{% block content %}
+
+<div class="container" style="margin-top :150px">
+    <div class="card">
+        {%for img in image%}
+        <img src="{{img.image.url}}" alt="" style="width:100%; height:600px;">
+
+        <div class="details" style="margin-left:20px">
+            <p><b><i>Likes {{img.liked.count}}</i></b></p>
+            <p><b><i>Posted by </i>{{img.posted_by}}</b></p>
+            <p><b><i>Posted </i>{{img.post_date|date}}</b></p>
+        </div>
+
+        <div class="row" style="margin-top: 5px">
+            <div class="col-md-9"></div>
+            <div class="col-md-3">
+                <form action="{%url 'like'%}" method="POST">
+                    {%csrf_token%}
+                    <button type="submit" name="img.id" value="{{img.id}}" class="btn btn-primary">like</button>
+                </form>
+            </div>
+        </div>
+        {% endfor%}
+        <h1 class="text-center">Comments</h1>
+        {%for comment in comments%}
+        <div class="card" style="margin-right: 10px;margin-left:10px;margin-bottom:15px">
+            
+            <p>{{comment.comment}}</p>
+            <p><i>comment by </i><b>{{comment.posted_by}}</b> <i>on </i><b>{{comment.posted_on}}</b></p>
+        </div>
+        {% empty%}
+        <h1>This image has no comments</h1>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

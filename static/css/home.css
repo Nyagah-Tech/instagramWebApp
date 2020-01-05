@@ -1,0 +1,21 @@
+body{
+    margin-top: 100px !important;
+    
+}
+.details{
+    margin-top: 25px;
+    text-align: center;
+    font-size: 15px;
+
+}
+#img {
+    -webkit-filter: grayscale(20%); /* Safari 6.0 - 9.0 */
+    filter: blackscale(60%);
+  }
+  #position{
+       margin-right: 700px;
+       margin-bottom: 120px
+  }
+  .btn{
+      
+  }

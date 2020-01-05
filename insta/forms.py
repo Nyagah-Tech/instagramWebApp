@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth import get_user_model
-from .models import Images,Profile
+from .models import Images,Profile,Comment
 
 User = get_user_model()
 class Loginform(forms.Form):
@@ -13,9 +13,9 @@ class Loginform(forms.Form):
         password = self.cleaned_data.get('password')
 
         if username and password:
-            user= authenticate(username=username,password = password)
+            user= User.objects.filter(username=username)
             if not user:
-                raise forms.ValidationError('This user doesnot exist')
+                raise forms.ValidationError('papapapapapa')
             if not user.check_password(password):
                 raise forms.ValidationError('Incoreect password')
         return super(Loginform, self).clean(*args, **kwargs)
@@ -53,20 +53,37 @@ class ImageForm(forms.ModelForm):
         model = Images
         exclude = [
             'posted_by',
-            'posted_date'
+            'posted_date',
+            'liked',
+            'comments'
         ]
-class ProfileForm(forms.ModelForm):
+            
+class UserUpdateform(forms.ModelForm):
+    email = forms.EmailField()
     class Meta:
-        model = Profile
-        exclude = [
-            'updated_on',
-            'name'
+        model = User
+        fields = [
+            'username',
+            'email',
         ]
+
 class UpdateProfileForm(forms.ModelForm):
     bio = forms.Textarea()
     class Meta:
         model = Profile
         exclude =[
             'updated_on',
-            'name'
+            'user',
+            'followers',
+            'following',
         ]
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = [
+            'comment'
+        ]
+
+
+
+    

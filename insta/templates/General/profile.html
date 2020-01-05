@@ -2,27 +2,72 @@
 {% load staticfiles %}
 {% load bootstrap4 %}
 {% block content%}
-    <div class="container">
-        <div class="profile">
-            <a href="{%url 'edit-profile' %}">edit profile</a><br>
-            <a href="{%url 'update-profile' %}">update profile</a>
-            {% for prof in profile %}
-                <p>{{prof.name}}</p>
-                <p>{{prof.bio}}</p>
-                <p>{{prof.profile_pic}}</p>
-            {% endfor %}
-        </div>
-        <div class="mypic" style="margin-top: 3px">
-            <h1>images</h1>
-            {% for image in images %}
-                <p>{{image.name}}</p>
-                <img src="{{image.image.url}}" alt="">
-            {% empty %}
-            <h1>ypou have no images</h1>
-            {% endfor %}
-            {{images}}
-            
+<head>
+    <link rel="stylesheet" href="{%static 'css/profile.css'%}">
+</head>
+<body style="background-color: rgb(235, 232, 232); !important">
+    
+
+
+    <div class="container" id='prof'>
+        <h2 class="text-center" style="margin-bottom: 10px;">{{user}} profile</h2>
+        <div class="card" style="background-color:white">
+            <div class="row">
+                {% for prof in profile %}
+                <div class="col-md-10" style="margin-left: 20px;margin-top:30px">
+                    <img src="{{prof.profile_pic.url}}" alt="profile" style="width: 350px; height: 350px; border-radius: 50%">
+                    <p><b>Name: </b><i>{{name}}</i></p>
+                    <p><b>Bio: </b><i class="text-center">{{prof.bio}}</i></p>
+                    <p><b>Followers: </b> {{prof.followers.count}}</p>
+                    <p><b>Following: </b>{{prof.following.count}}</p>
+                    <p><b>Lastly updated on </b><i>{{prof.updated_on}}</i></p>
+                    <a id="update" class="btn" href="{%url 'update-profile' %}" style="float: right;font-size: 20px"><b>Update profile</b> </a>
+                </div>
+                <div class="col-md-2"></div>
+                   
+                    
+                
+                {% endfor%}
+                
+               
+            </div>
+           
         </div>
        
+        <div class="mypics" style="margin-top: 20px">
+                <h2 class="text-center" style="margin-bottom: 10px">~Your timeline~</h2>
+                <div class="row">
+                    {% for image in images %}
+                    <div class="col-md-4" style="margin-bottom: 25px" >
+                        <div class="card" style="height: 400px; width: 350px; ">
+                           
+                            <img src="{{image.image.url}}" alt="" style="width:350px;height:250px" class="img-responsive">
+                            <div class="details">
+                                <p><b><i>Likes {{image.liked.count}}</i></b></p>
+                                <p><b><i>Posted by </i>{{image.posted_by}}</b></p>
+                                <p><b><i>Posted </i>{{image.post_date|date}}</b></p>
+                            </div>
+                            
+                                <div class="row" style="margin-top: 5px">
+                                    <div class="col-md-9"></div>
+                                    <div class="col-md-3">
+                                        <form action="{%url 'like'%}" method="POST">
+                                            {%csrf_token%}
+                                            <button type="submit" name="image.id" value="{{image.id}}"
+                                                class="btn btn-primary">like</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    {% endfor %}
+                </div>
+            </div>
+    
     </div>
+</body>
+<footer style="margin-bottom: 0px">
+    {%include "General/footer.html"%}
+</footer>
 {% endblock %}
