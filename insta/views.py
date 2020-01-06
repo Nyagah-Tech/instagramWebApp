@@ -134,7 +134,24 @@ def find(request):
         else:
             users.append(user)
     return render(request,'General/find.html',{"users":users,"noUser":noUser})
+def comment(request,id):
+    if request.method =='POST':
+        image = get_object_or_404(Images,id =id)
+        form = CommentForm(request.POST)
 
+        if form.is_valid():
+            imageComment = form.save(commit = False)
+            imageComment.posted_by = request.user
+            images = Images.objects.get(id = id)
+            imageComment.image_id = images
+            imageComment.save()
+            return redirect('home')
+
+    else:
+        form =CommentForm()
+        image = get_object_or_404(Images,id =id)
+        id = image.id
+    return render(request,'General/comment.html',{"form":form,"id":id})
 
 def comment_view(request,id):
     image = Images.objects.filter(id=id)
