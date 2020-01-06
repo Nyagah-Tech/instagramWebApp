@@ -61,22 +61,15 @@ def post_image(request):
     else:
         form = ImageForm()
     return render(request,'General/new_image.html',{"form":form})
-
-    
 @login_required
-def update_profile(request):
-   
-    if request.method == 'POST':
-        form = UpdateProfileForm(request.POST,request.FILES,instance=request.user.profile)
-        form1 = UserUpdateform(request.POST,instance=request.user)
-        if form.is_valid() and form1.is_valid():
-            form1.save() 
-            form.save()
-            return redirect('profile')
-    else:
-        form = UpdateProfileForm(instance=request.user.profile)
-        form1 = UserUpdateform(instance=request.user)
-    return render(request,"General/update_profile.html",{"form":form,"form1":form1})
+def profile(request):
+    name = request.user
+    profile = Profile.get_profile_by_name(name)
+    images = Images.get_images_by_name(name)
+
+    return render(request,"General/profile.html",{"profile":profile,"images":images,"name":name})
+    
+
 
 def like(request):
     user = request.user
