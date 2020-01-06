@@ -69,16 +69,21 @@ def profile(request):
 
     return render(request,"General/profile.html",{"profile":profile,"images":images,"name":name})
     
-
-
-def like(request):
-    user = request.user
-    image = get_object_or_404(Images,id= request.POST.get('image.id') )
-    if image.liked.filter(id = user.id).exists():
-        image.liked.remove(user)
+@login_required
+def update_profile(request):
+   
+    if request.method == 'POST':
+        form = UpdateProfileForm(request.POST,request.FILES,instance=request.user.profile)
+        form1 = UserUpdateform(request.POST,instance=request.user)
+        if form.is_valid() and form1.is_valid():
+            form1.save() 
+            form.save()
+            return redirect('profile')
     else:
-        image.liked.add(request.user)
-    return redirect('home')
+        form = UpdateProfileForm(instance=request.user.profile)
+        form1 = UserUpdateform(instance=request.user)
+    return render(request,"General/update_profile.html",{"form":form,"form1":form1})
+
 
 def follow(request):
     user = request.user
