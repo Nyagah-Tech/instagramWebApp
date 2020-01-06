@@ -81,7 +81,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'tinymce',
     'django_cleanup',
-    'crispy_forms',
+    
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
