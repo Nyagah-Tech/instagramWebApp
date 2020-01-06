@@ -93,27 +93,20 @@ def like(request):
         image.liked.add(request.user)
     return redirect('home')
 
-
+def follow(request):
+    user = request.user
+    follow = get_object_or_404(Profile,user= request.POST.get('usr.id'))
+    if follow.followers.filter(id = user.id).exists():
+        follow.followers.remove(user)
+    else:
+        follow.followers.add(user)
+    return redirect('home')
 
 def navbar_view(request):
     current_user = request.user
 
     return render(request,'navbar.html',{"current_user":current_user})
 
-def search_view(request):
-    if request.method == 'POST':
-        search = request.POST['search']
-        searchterm = User.objects.filter(username = search).first()
-        if Profile.get_profile_by_name(searchterm.id) is None:
-            messages.info(request,'Username doesnot exist')
-            return redirect('navbar_view')
-        else:
-            profile = Profile.get_profile_by_name(searchterm.id)
-            images = Images.get_images_by_name(searchterm.id)
-            return render(request,'General/search.html',{"profile":profile,"images":images,"search":search})
-    else:
-        messages.info(request,'Filling the input field')
-        return redirect('home')
 
 def find(request):
     current_user = request.user
