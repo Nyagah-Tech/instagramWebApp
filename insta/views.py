@@ -84,15 +84,16 @@ def update_profile(request):
         form1 = UserUpdateform(instance=request.user)
     return render(request,"General/update_profile.html",{"form":form,"form1":form1})
 
-
-def follow(request):
+def like(request):
     user = request.user
-    follow = get_object_or_404(Profile,user= request.POST.get('usr.id'))
-    if follow.followers.filter(id = user.id).exists():
-        follow.followers.remove(user)
+    image = get_object_or_404(Images,id= request.POST.get('image.id') )
+    if image.liked.filter(id = user.id).exists():
+        image.liked.remove(user)
     else:
-        follow.followers.add(user)
+        image.liked.add(request.user)
     return redirect('home')
+
+
 
 def navbar_view(request):
     current_user = request.user
