@@ -48,3 +48,8 @@ class Profile(models.Model):
         return profile
 
 
+class Comment(models.Model):
+    comment = HTMLField()
+    posted_by = models.ForeignKey(User, on_delete = models.CASCADE)
+    posted_on = models.DateField(auto_now_add=True)
+    image_id = models.ForeignKey(Images,on_delete= models.CASCADE)
