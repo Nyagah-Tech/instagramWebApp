@@ -13,6 +13,9 @@ User =get_user_model()
 
 @login_required(login_url = 'accounts/login/')
 def home(request):
+    '''
+    this is a view function that renders our homepage
+    '''
     current_user = request.user
     images = Images.get_all_images()
     users = User.objects.all()
@@ -20,6 +23,9 @@ def home(request):
     return render(request,"home.html",{"images":images,"current_user":current_user,"users":users,})
 
 def register(request):
+    '''
+    this is a view function that is responsible for rendering our register form and funtionality
+    '''
     if request.method == 'POST':
         username = request.POST['username']
         first_name =request.POST['first_name']
@@ -49,6 +55,9 @@ def logout_view(request):
     return redirect('/')
 @login_required
 def post_image(request):
+    '''
+    this is a view function that enables a user to post an image
+    '''
     current_user = request.user
     if request.method == 'POST':
         form = ImageForm(request.POST,request.FILES)
@@ -63,6 +72,9 @@ def post_image(request):
     return render(request,'General/new_image.html',{"form":form})
 @login_required
 def profile(request):
+    '''
+    this is a view function that will return the users profile as well as render the profile.html
+    '''
     name = request.user
     profile = Profile.get_profile_by_name(name)
     images = Images.get_images_by_name(name)
@@ -71,7 +83,10 @@ def profile(request):
     
 @login_required
 def update_profile(request):
-   
+    '''
+    this is a view function that carries out the update profile functionality
+    '''
+
     if request.method == 'POST':
         form = UpdateProfileForm(request.POST,request.FILES,instance=request.user.profile)
         form1 = UserUpdateform(request.POST,instance=request.user)
@@ -85,6 +100,9 @@ def update_profile(request):
     return render(request,"General/update_profile.html",{"form":form,"form1":form1})
 
 def like(request):
+    '''
+    view function that handles the like functionality
+    '''
     user = request.user
     image = get_object_or_404(Images,id= request.POST.get('image.id') )
     if image.liked.filter(id = user.id).exists():
@@ -94,6 +112,9 @@ def like(request):
     return redirect('home')
 
 def follow(request):
+    '''
+    views function that handles the follow functionality
+    '''
     user = request.user
     follow = get_object_or_404(Profile,user= request.POST.get('usr.id'))
     if follow.followers.filter(id = user.id).exists():
@@ -108,6 +129,9 @@ def navbar_view(request):
     return render(request,'navbar.html',{"current_user":current_user})
 
 def search_view(request):
+    '''
+    this is a view function that handles the search user by username functionality
+    '''
     if request.method == 'POST':
         search = request.POST['search']
         searchterm = User.objects.filter(username = search).first()
@@ -135,6 +159,9 @@ def find(request):
             users.append(user)
     return render(request,'General/find.html',{"users":users,"noUser":noUser})
 def comment(request,id):
+    '''
+    view function that handles the comment feature funtionality
+    '''
     if request.method =='POST':
         image = get_object_or_404(Images,id =id)
         form = CommentForm(request.POST)
@@ -154,6 +181,9 @@ def comment(request,id):
     return render(request,'General/comment.html',{"form":form,"id":id})
 
 def comment_view(request,id):
+    '''
+    view function that contains the view comments functionality
+    '''
     image = Images.objects.filter(id=id)
     comments = Comment.objects.filter(image_id = id)
     return render(request,'General/image.html',{"image":image,"comments":comments})
