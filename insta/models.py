@@ -31,23 +31,6 @@ class Images(models.Model):
 
         return images
 
-class Profile(models.Model):
-    user  = models.OneToOneField(User, on_delete = models.CASCADE)
-    profile_pic = models.ImageField(upload_to = 'images/', default='default.jpg')
-    bio = HTMLField()
-    followers = models.ManyToManyField(User,blank = True,related_name='followers')
-    following = models.ManyToManyField(User,blank = True,related_name='following')
-    updated_on = models.DateTimeField(auto_now_add=True)
-
-
-    
-    @classmethod
-    def get_profile_by_name(cls,name):
-        profile = cls.objects.filter(user = name)
-
-        return profile
-
-
 class Comment(models.Model):
     comment = HTMLField()
     posted_by = models.ForeignKey(User, on_delete = models.CASCADE)
