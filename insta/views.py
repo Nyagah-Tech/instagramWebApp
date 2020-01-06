@@ -122,25 +122,19 @@ def search_view(request):
         messages.info(request,'Filling the input field')
         return redirect('home')
 
+def find(request):
+    current_user = request.user
+    profile = get_object_or_404(Profile,user = current_user.id)
+    usrs = User.objects.all()
+    noUser = []
+    users=[]
+    for user in usrs:
+        if profile.followers.filter(id = user.id).exists():
+            noUser.append(user)
+        else:
+            users.append(user)
+    return render(request,'General/find.html',{"users":users,"noUser":noUser})
 
-def comment(request,id):
-    if request.method =='POST':
-        image = get_object_or_404(Images,id =id)
-        form = CommentForm(request.POST)
-
-        if form.is_valid():
-            imageComment = form.save(commit = False)
-            imageComment.posted_by = request.user
-            images = Images.objects.get(id = id)
-            imageComment.image_id = images
-            imageComment.save()
-            return redirect('home')
-
-    else:
-        form =CommentForm()
-        image = get_object_or_404(Images,id =id)
-        id = image.id
-    return render(request,'General/comment.html',{"form":form,"id":id})
 
 def comment_view(request,id):
     image = Images.objects.filter(id=id)
