@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import django_heroku
 import dj_database_url
+import django_heroku
 from decouple import config,Csv
 
 
@@ -29,7 +29,7 @@ if config('MODE')=='dev':
             'USER': config('DB_USER'),
             'PASSWORD': config('DB_PASSWORD'),
             'HOST': config('DB_HOST'),
-            'PORT':''
+            'PORT':'',
         }
     }
 else:
@@ -81,7 +81,6 @@ INSTALLED_APPS = [
     'bootstrap4',
     'tinymce',
     'django_cleanup',
-    
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
