@@ -61,13 +61,7 @@ def post_image(request):
     else:
         form = ImageForm()
     return render(request,'General/new_image.html',{"form":form})
-@login_required
-def profile(request):
-    name = request.user
-    profile = Profile.get_profile_by_name(name)
-    images = Images.get_images_by_name(name)
 
-    return render(request,"General/profile.html",{"profile":profile,"images":images,"name":name})
     
 @login_required
 def update_profile(request):
