@@ -28,16 +28,35 @@
         </div>
        
     </div>
-    <div class="mypic" style="margin-top: 3px">
-        <h1>images</h1>
-        {% for image in images %}
-        <p>{{image.name}}</p>
-        <img src="{{image.image.url}}" alt="">
-        {% empty %}
-        <h1>{{search}} has not posted any image</h1>
-        {% endfor %}
+    <div class="row" style="margin-top: 30px">
+            {% for image in images %}
+            <div class="col-md-4" style="margin-bottom: 25px">
+                <div class="card" style="height: 400px; width: 350px; ">
+                    <img class="img" src="{{image.image.url}}" alt="" style="width:350px;height:250px"
+                        class="img-responsive">
+                    <div class="details">
+                        <p><b><i>Likes {{image.liked.count}}</i></b></p>
+                        <p><b><i>Posted by </i>{{image.posted_by}}</b></p>
+                        <p><b><i>Posted </i>{{image.post_date|date}}</b></p>
+                    </div>
 
-    </div>
+                    <div class="row" style="margin-top: 1px">
+                        <div class="col-md-9" style="font-size: 11px">
+                           
+                        </div>
+                        <div class="col-md-3">
+                            <form action="{%url 'like'%}" method="POST">
+                                {%csrf_token%}
+                                <button type="submit" name="image.id" value="{{image.id}}"
+                                    class="btn btn-primary">like</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
 
 </div>
 {% endblock %}
