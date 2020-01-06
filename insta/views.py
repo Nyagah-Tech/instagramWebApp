@@ -19,7 +19,30 @@ def home(request):
     
     return render(request,"home.html",{"images":images,"current_user":current_user,"users":users,})
 
-
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        first_name =request.POST['first_name']
+        last_name = request.POST['last_name']
+        email = request.POST['email']
+        password = request.POST['password']
+        password1 =request.POST['password1']
+        
+        if password1 == password:
+            if User.objects.filter(username = username):
+                messages.info(request,'This username is taken')
+                return redirect('register')
+            else:
+                user = User.objects.create_user(username = username,password = password,email = email,first_name = first_name,last_name = last_name,)
+                user.save()
+                send_register_confirm_email(username,email)
+                return redirect('home')
+        else:
+            messages.info(request,'passwords should match')
+            return redirect('register')
+        
+    else:
+        return render(request,'registration/registration_form.html')
 
 def logout_view(request):
     logout(request)
