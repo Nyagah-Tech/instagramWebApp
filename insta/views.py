@@ -107,19 +107,22 @@ def navbar_view(request):
 
     return render(request,'navbar.html',{"current_user":current_user})
 
-
-def find(request):
-    current_user = request.user
-    profile = get_object_or_404(Profile,user = current_user.id)
-    usrs = User.objects.all()
-    noUser = []
-    users=[]
-    for user in usrs:
-        if profile.followers.filter(id = user.id).exists():
-            noUser.append(user)
+def search_view(request):
+    if request.method == 'POST':
+        search = request.POST['search']
+        searchterm = User.objects.filter(username = search).first()
+        if Profile.get_profile_by_name(searchterm.id) is None:
+            messages.info(request,'Username doesnot exist')
+            return redirect('navbar_view')
         else:
-            users.append(user)
-    return render(request,'General/find.html',{"users":users,"noUser":noUser})
+            profile = Profile.get_profile_by_name(searchterm.id)
+            images = Images.get_images_by_name(searchterm.id)
+            return render(request,'General/search.html',{"profile":profile,"images":images,"search":search})
+    else:
+        messages.info(request,'Filling the input field')
+        return redirect('home')
+
+
 def comment(request,id):
     if request.method =='POST':
         image = get_object_or_404(Images,id =id)
