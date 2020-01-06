@@ -153,7 +153,10 @@ def comment(request,id):
         id = image.id
     return render(request,'General/comment.html',{"form":form,"id":id})
 
-
+def comment_view(request,id):
+    image = Images.objects.filter(id=id)
+    comments = Comment.objects.filter(image_id = id)
+    return render(request,'General/image.html',{"image":image,"comments":comments})
 
 
             
